@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+
+    volumes:
+      - './frontend/design:/opt/frontend/design'
+      - './frontend/package.json:/opt/frontend/package.json'
+      - './frontend/yarn.lock:/opt/frontend/yarn.lock'
+      - './backend/jaxattax/static:/opt/frontend/dist'
+
+    command: yarn start
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+
+    command: ./manage.py runserver 0.0.0.0:8000
+
+    ports:
+      - '80:8000'
+
+    volumes:
+      - './backend:/opt/backend'
+
+    environment:
+      - 'DJANGO_SETTINGS_MODULE=jaxattax.settings.dev'
+
+    depends_on:
+      - database
+
+    links:
+      - mail
+      - frontend
+
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_DB=jaxattax
+      - POSTGRES_USER=jaxattax
+      - POSTGRES_PASSWORD=dev-password
+
+  mail:
+    image: djfarrelly/maildev
+    ports:
+      - "9000:80"
