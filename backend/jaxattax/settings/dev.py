@@ -8,6 +8,8 @@ MEDIA_BASE = ASSETS_BASE / "media"
 
 STATICFILES_DIRS = ['/opt/frontend/dist']
 
+DEBUG = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -17,3 +19,5 @@ DATABASES = {
         'PASSWORD': 'dev-password',
     }
 }
+
+SECRET_KEY = 'shhh not very secret'
