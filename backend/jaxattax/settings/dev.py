@@ -6,6 +6,8 @@ ASSETS_BASE = LOCAL_BASE / "assets"
 STATIC_BASE = ASSETS_BASE / "static"
 MEDIA_BASE = ASSETS_BASE / "media"
 
+STATICFILES_DIRS = ['/opt/frontend/dist']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

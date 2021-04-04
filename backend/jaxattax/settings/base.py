@@ -33,9 +33,11 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'jaxattax',
     'jaxattax.pages',
+    'jaxattax.news',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.routable_page',
     'wagtail.contrib.settings',
     'wagtail.contrib.styleguide',
     'wagtail.embeds',
@@ -50,6 +52,8 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'wagtailfontawesome',
+    'wagtailnews',
 
     'django.contrib.admin',
     'django.contrib.auth',

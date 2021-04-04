@@ -1,5 +1,6 @@
 version: '3.9'
 
+
 services:
   frontend:
     build:
@@ -9,9 +10,9 @@ services:
 
     volumes:
       - './frontend/design:/opt/frontend/design'
+      - './frontend/dist:/opt/frontend/dist'
       - './frontend/package.json:/opt/frontend/package.json'
       - './frontend/yarn.lock:/opt/frontend/yarn.lock'
-      - './backend/jaxattax/static:/opt/frontend/dist'
 
     command: yarn start
 
@@ -28,6 +29,7 @@ services:
 
     volumes:
       - './backend:/opt/backend'
+      - './frontend/dist:/opt/frontend/dist'
 
     environment:
       - 'DJANGO_SETTINGS_MODULE=jaxattax.settings.dev'

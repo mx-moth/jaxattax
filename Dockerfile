@@ -37,7 +37,6 @@ RUN pip3 install --no-cache-dir --upgrade pip setuptools wheel \
 
 
 COPY ./backend /opt/backend
-COPY --from=frontend /opt/frontend/dist /opt/frontend/dist
 
 ENV PYTHONUNBUFFERED=1 \
 	PYTHONIOENCODING=UTF-8 \

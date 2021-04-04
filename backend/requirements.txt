@@ -30,6 +30,7 @@ django==3.1.7
     #   django-treebeard
     #   djangorestframework
     #   wagtail
+    #   wagtailfontawesome
 djangorestframework==3.12.4
     # via wagtail
 draftjs-exporter==2.1.7
@@ -68,6 +69,13 @@ tablib[xls,xlsx]==3.0.0
 urllib3==1.26.4
     # via requests
 wagtail==2.12.3
+    # via
+    #   -r backend/requirements.in
+    #   wagtailfontawesome
+    #   wagtailnews
+wagtailfontawesome==1.2.1
+    # via -r backend/requirements.in
+wagtailnews==2.7.1
     # via -r backend/requirements.in
 webencodings==0.5.1
     # via html5lib
