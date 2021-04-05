@@ -9,10 +9,9 @@ services:
       target: frontend
 
     volumes:
-      - './frontend/design:/opt/frontend/design'
-      - './frontend/dist:/opt/frontend/dist'
-      - './frontend/package.json:/opt/frontend/package.json'
-      - './frontend/yarn.lock:/opt/frontend/yarn.lock'
+      - './src/jaxattax/frontend:/opt/jaxattax/src/jaxattax/frontend'
+      - './package.json:/opt/jaxattax/package.json'
+      - './yarn.lock:/opt/jaxattax/yarn.lock'
 
     command: yarn start
 
@@ -22,14 +21,14 @@ services:
       dockerfile: Dockerfile
       target: backend
 
-    command: ./manage.py runserver 0.0.0.0:8000
+    command: ./src/manage.py runserver 0.0.0.0:8000
 
     ports:
       - '80:8000'
 
     volumes:
-      - './backend:/opt/backend'
-      - './frontend/dist:/opt/frontend/dist'
+      - './src:/opt/jaxattax/src'
+      - './local:/opt/jaxattax/local'
 
     environment:
       - 'DJANGO_SETTINGS_MODULE=jaxattax.settings.dev'

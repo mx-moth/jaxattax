@@ -3,14 +3,14 @@ FROM node:8-stretch as frontend
 
 ENV NPM_CONFIG_LOGLEVEL=warn
 
-WORKDIR /opt/frontend
-COPY ./frontend/package.json ./frontend/yarn.lock /opt/frontend/
+WORKDIR /opt/jaxattax
+COPY ./package.json ./yarn.lock /opt/jaxattax/
 
 RUN yarn && \
 	yarn cache clean && \
 	true
 
-COPY ./frontend/design /opt/frontend/design
+COPY ./src/jaxattax/frontend /opt/jaxattax/src/jaxattax/frontend
 
 RUN yarn run build
 CMD ["yarn", "start"]
@@ -18,7 +18,7 @@ CMD ["yarn", "start"]
 # Backend application
 FROM alpine as backend
 
-WORKDIR /opt/backend
+WORKDIR /opt/jaxattax
 
 RUN apk add --no-cache \
 		python3 py3-pip py3-pillow \
@@ -27,7 +27,7 @@ RUN apk add --no-cache \
 		jpeg-dev zlib-dev musl-dev python3-dev \
 	&& true
 
-COPY backend/requirements.txt /tmp/requirements.txt
+COPY ./requirements.txt /tmp/requirements.txt
 
 RUN pip3 install --no-cache-dir --upgrade pip setuptools wheel \
 	&& pip3 install --no-cache-dir pyinotify -r /tmp/requirements.txt \
@@ -36,7 +36,8 @@ RUN pip3 install --no-cache-dir --upgrade pip setuptools wheel \
 	&& true
 
 
-COPY ./backend /opt/backend
+COPY ./src /opt/jaxattax/src
+COPY --from=frontend /opt/jaxattax/src/jaxattax/frontend/static /opt/jaxattax/src/jaxattax/frontend/static
 
 ENV PYTHONUNBUFFERED=1 \
 	PYTHONIOENCODING=UTF-8 \
@@ -48,4 +49,4 @@ ENV PYTHONUNBUFFERED=1 \
 
 EXPOSE 80
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/opt/backend/deploy/run.sh"]
+CMD ["gunicorn", "--chdir", "src", "jaxattax.wsgi"]

@@ -17,8 +17,8 @@
     "jquery": "^3.3.1"
   },
   "scripts": {
-    "start": "parcel watch --public-url /assets/static/ design/style.scss",
-    "build": "parcel build --public-url /assets/static/ design/style.scss"
+    "start": "parcel watch --public-url /assets/static/ --out-dir src/jaxattax/frontend/static src/jaxattax/frontend/src/style.scss",
+    "build": "parcel build --public-url /assets/static/ --out-dir src/jaxattax/frontend/static src/jaxattax/frontend/src/style.scss"
   },
   "private": true,
   "main": "index.js",

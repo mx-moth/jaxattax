@@ -6,8 +6,6 @@ ASSETS_ROOT = LOCAL_ROOT / "assets"
 STATIC_ROOT = ASSETS_ROOT / "static"
 MEDIA_ROOT = ASSETS_ROOT / "media"
 
-STATICFILES_DIRS = ['/opt/frontend/dist']
-
 DEBUG = True
 
 DATABASES = {
