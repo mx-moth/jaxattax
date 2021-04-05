@@ -1,4 +1,5 @@
 .venv/
 frontend/dist/
 backend/jaxattax/static
+backend/local
 thing

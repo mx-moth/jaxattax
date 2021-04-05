@@ -1,10 +1,10 @@
 from jaxattax.settings.base import *
 
-LOCAL_BASE = BASE_DIR / "local"
+LOCAL_ROOT = BASE_DIR / "local"
 
-ASSETS_BASE = LOCAL_BASE / "assets"
-STATIC_BASE = ASSETS_BASE / "static"
-MEDIA_BASE = ASSETS_BASE / "media"
+ASSETS_ROOT = LOCAL_ROOT / "assets"
+STATIC_ROOT = ASSETS_ROOT / "static"
+MEDIA_ROOT = ASSETS_ROOT / "media"
 
 STATICFILES_DIRS = ['/opt/frontend/dist']
 
