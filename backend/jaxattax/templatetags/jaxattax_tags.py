@@ -2,6 +2,7 @@ import dataclasses
 import typing as t
 
 from django import http, template
+from django.core import paginator
 from wagtail.core.models import Page, Site
 
 register = template.Library()
@@ -73,15 +74,52 @@ def table_of_contents(context, active_page: Page):
     tree_base = home_page.get_children().ancestor_of(active_page, inclusive=True).specific().get()
     descendants = tree_base.get_descendants().in_menu().live().specific()
     page_tree = _as_tree(tree_base, descendants)
-    print('base:', tree_base)
-    print('descendants:', list(descendants.all()))
-    print('page_tree:', page_tree)
 
     return {'node': page_tree, 'active_page': active_page}
 
 
 @register.inclusion_tag('tags/pagination.html', takes_context=True)
-def paginate(context, paginator, page):
+def paginate(context: t.Mapping, paginator: paginator.Paginator, page: paginator.Page, base_url: t.Optional[str] = None):
+    request = context['request']
+    query = request.GET
+    if base_url is None:
+        base_url = request.path
+
     return {
-        'request': context['request'], 'paginator': paginator, 'page': page,
+        'request': context['request'],
+        'paginator': paginator,
+        'page': page,
+        'links': {
+            'first': paginate_link(base_url, query, 1) if page.has_previous() else None,
+            'last': paginate_link(base_url, query, paginator.num_pages) if page.has_next() else None,
+            'next': paginate_link(base_url, query, page.next_page_number()) if page.has_next() else None,
+            'previous': paginate_link(base_url, query, page.previous_page_number()) if page.has_previous() else None,
+        },
     }
+
+
+@register.simple_tag()
+def paginate_link(base_url: str, query: http.QueryDict, page_number: int):
+    """
+    The canonical link for a paginated page. Makes sure the first page doesn't
+    have a `page=0` component
+    """
+    if page_number == 1:
+        page_number = None
+    return base_url + query_args(query, page=page_number)
+
+
+@register.filter(name='qs')
+def query_args(query: http.QueryDict, **kwargs: t.Dict[str, t.Optional[str]]):
+    query = query.copy()
+
+    for key, value in kwargs.items():
+        if value is not None:
+            query[key] = value
+        else:
+            query.pop(key, None)
+
+    if len(query) == 0:
+        return ''
+
+    return '?' + query.urlencode()
